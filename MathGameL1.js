@@ -7,10 +7,12 @@ while(true){
     const input = prompt("Enter option: ").trim();
     console.log("");
     const option = Number(input);
+
     if(Number.isNaN(option)){
         console.log("Invalid input. Please enter a number.");
         continue;
     }
+
     console.log(`You selected: ${option}`)
     if(option === 1){
         maxScore();
@@ -27,35 +29,34 @@ while(true){
         break;
     }
 }
+function randomNum(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function maxScore(){
     console.log(`\nMax Score started`);
     const eQ = [`+`,`-`,`*`,`/`,`%`];
     let score = 0;
-    let seed = Date.now();
-    function randomNum(min, max){
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return min + (seed % (max - min + 1));
-    }
+    
     for (let i=0; i<20; i++){
         const num1 = randomNum(1, 100);
         const num2 = randomNum(1, 100);
         const eQs = eQ[randomNum(0, eQ.length - 1)];
-        let Q;
-        let correctAns;
+        let Q, correctAns;
+
         if(eQs === `/`){
             const divs = randomNum(1, 10);
             const quo = randomNum(1, 10);
             const div = divs * quo;
             Q = `${div} / ${divs}`;
             correctAns = quo;
-        }   else if(eQs === `%`){
+        }else if(eQs === `%`){
             const base = randomNum(1, 50);
             const mod = randomNum(1, 50);
             const div = base + mod;
             Q = `${div} % ${mod}`;
             correctAns = div % mod;
-        }   else{
+        }else{
             Q=`${num1} ${eQs} ${num2}`;
             correctAns = eval(Q);
         }
@@ -86,35 +87,33 @@ function threeOut(){
     const eQ = [`+`,`-`,`*`,`/`,`%`];
     let score = 0;
     let lives = 0;
-    let seed = Date.now();
-    function randomNum(min, max){
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return min + (seed % (max - min + 1));
-    }
     let questionNum = 1;
+
     while(lives < 3){
         const num1 = randomNum(1, 100);
         const num2 = randomNum(1, 100);
         const eQs = eQ[randomNum(0, eQ.length - 1)];
         let Q, correctAns;
+
         if(eQs === `/`){
             const divs = randomNum(1, 10);
             const quo = randomNum(1, 10);
             const div = divs * quo;
             Q = `${div} / ${divs}`;
             correctAns = quo;
-        }   else if (eQs === `%`){
+        }else if (eQs === `%`){
             const base = randomNum(1, 50);
             const mod = randomNum(1, 10);
             const div = base + mod;
             Q = `${div} % ${mod}`;
             correctAns = div % mod;
-        }   else{
+        }else{
             Q = `${num1} ${eQs} ${num2}`;
             correctAns = eval(Q);
         }
         console.log(`Question ${questionNum++}: ${Q} = ?\n`);
         const ans = prompt("Answer: ").trim().toLowerCase();
+        
         if(Number(ans) === correctAns){
             console.log("Correct!");
             score += 10;

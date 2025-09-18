@@ -13,35 +13,76 @@ while(true){
         continue;
     }
 
-    console.log(`You selected: ${option}`)
-    if(option === 1){
-        maxScore();
-    }
-    else if(option === 2){
-        threeOut();
-    }
-    else if(option === 3){
+    if(option === 3){
         console.log(`Exiting Program`);
         break;
     }
+    let mode = "";
+    if(option === 1) mode = "Max Score Mode";
+    else if(option === 2) mode = "Three-Out Mode";
     else{
         console.log(`Invalid option, program end.`);
         break;
+    }
+    console.log(`You selected option ${option} - ${mode}\n`)
+
+    console.log("Select Difficulty:")
+    console.log("Option 1 - Easy");
+    console.log("Option 2 - Medium");
+    console.log("Option 3 - Hard");
+    const difInput = prompt("Choose difficulty:").trim();
+    const dif = Number(difInput)
+    if(Number.isNaN(dif) || dif < 1 || dif > 3){
+        console.log("Not an option. ending program");
+        break;
+    }
+    const difName = {
+        1: "Easy",
+        2: "Medium",
+        3: "Hard"
+    };
+    console.log(`You selected difficulty ${dif} - ${difName[dif]}\n`)
+
+    if(option ===1){
+        maxScore(dif)
+    }else if(option === 2){
+        threeOut(dif)
     }
 }
 function randomNum(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function maxScore(){
-    console.log(`\nMax Score started`);
+function maxScore(dif){
+    console.log(`\nMax Score started [Difficulty: ${dif === 1 ? "Easy" : dif === 2 ? "Medium" : "Hard"}]\n`);
     const eQ = [`+`,`-`,`*`,`/`,`%`];
     let score = 0;
     
     for (let i=0; i<20; i++){
-        const num1 = randomNum(1, 100);
-        const num2 = randomNum(1, 100);
-        const eQs = eQ[randomNum(0, eQ.length - 1)];
+        let num1, num2, eQs;
+        if(dif === 1){
+            num1 = randomNum(1, 9);
+            num2 = randomNum(1, 9);
+            eQs = [`+`, `-`][randomNum(0, 1)];
+        }else if(dif === 2){
+            eQs = eQ[randomNum(0, eQ.length - 1)];
+            if(eQs === `+` || eQs === `-`){
+                num1 = randomNum(1, 99);
+                num2 = randomNum(1, 99);
+            }else {
+                num1 = randomNum(1, 9);
+                num2 = randomNum(1, 9);
+            }
+        }else {
+            eQs = eQ[randomNum(0, eQ.length - 1)];
+            if(eQs === `+` || eQs === `-`){
+                num1 = randomNum(1, 999);
+                num2 = randomNum(1, 999);
+            }else{
+                num1 = randomNum(1, 99);
+                num2 = randomNum(1, 9);
+            }
+        }
         let Q, correctAns;
 
         if(eQs === `/`){
@@ -82,17 +123,38 @@ function maxScore(){
     console.log(`Your final score is: ${score}`);
 }
 
-function threeOut(){
-    console.log(`\nThree-Out Started`);
+function threeOut(dif){
+    console.log(`\nThree-Out Started [Difficulty: ${dif === 1 ? "Easy" : dif === 2 ? "Medium" : "Hard"}]\n`);
     const eQ = [`+`,`-`,`*`,`/`,`%`];
     let score = 0;
     let lives = 0;
     let questionNum = 1;
 
     while(lives < 3){
-        const num1 = randomNum(1, 100);
-        const num2 = randomNum(1, 100);
-        const eQs = eQ[randomNum(0, eQ.length - 1)];
+        let num1, num2, eQs;
+        if(dif === 1){
+            num1 = randomNum(1, 9);
+            num2 = randomNum(1, 9);
+            eQs = [`+`, `-`][randomNum(0, 1)];
+        }else if(dif === 2){
+            eQs = eQ[randomNum(0, eQ.length - 1)];
+            if(eQs === `+` || eQs === `-`){
+                num1 = randomNum(1, 99);
+                num2 = randomNum(1, 99);
+            }else {
+                num1 = randomNum(1, 9);
+                num2 = randomNum(1, 9);
+            }
+        }else {
+            eQs = eQ[randomNum(0, eQ.length - 1)];
+            if(eQs === `+` || eQs === `-`){
+                num1 = randomNum(1, 999);
+                num2 = randomNum(1, 999);
+            }else{
+                num1 = randomNum(1, 99);
+                num2 = randomNum(1, 9);
+            }
+        }
         let Q, correctAns;
 
         if(eQs === `/`){
@@ -113,7 +175,7 @@ function threeOut(){
         }
         console.log(`Question ${questionNum++}: ${Q} = ?\n`);
         const ans = prompt("Answer: ").trim().toLowerCase();
-        
+
         if(Number(ans) === correctAns){
             console.log("Correct!");
             score += 10;
